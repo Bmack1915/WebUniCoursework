@@ -8,8 +8,8 @@ namespace WebCoursework.Models
 		public int PlayerId { get; set; }
 		public string Name { get; set; }
 
-		public int TeamId { get; set; }
-		public Team Team { get; set; }
+		public int? TeamId { get; set; }
+		public Team? Team { get; set; }
 	}
 }
 
