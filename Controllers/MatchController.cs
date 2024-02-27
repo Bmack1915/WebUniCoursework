@@ -14,10 +14,13 @@ namespace WebCoursework.Controllers
     public class MatchController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILogger _logger;
 
-        public MatchController(ApplicationDbContext context)
+        public MatchController(ApplicationDbContext context, ILogger logger)
         {
             _context = context;
+            _logger = logger;
+
         }
 
         // GET: api/Match

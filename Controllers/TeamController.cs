@@ -14,10 +14,12 @@ namespace WebCoursework.Controllers
     public class TeamController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILogger _logger;
 
-        public TeamController(ApplicationDbContext context)
+        public TeamController(ApplicationDbContext context, ILogger logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: api/Team

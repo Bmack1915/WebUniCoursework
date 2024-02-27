@@ -16,6 +16,10 @@ public class Program
        options.UseSqlite(builder.Configuration.GetConnectionString("Connection")));
         builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+
+        //Register logger
+
+
         var app = builder.Build();
 
        

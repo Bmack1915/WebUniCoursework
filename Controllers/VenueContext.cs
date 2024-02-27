@@ -14,10 +14,12 @@ namespace WebCoursework.Controllers
     public class VenueContext : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILogger _logger;
 
-        public VenueContext(ApplicationDbContext context)
+        public VenueContext(ApplicationDbContext context, ILogger logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: api/VenueContext

@@ -14,10 +14,12 @@ namespace WebCoursework.Controllers
     public class PlayerController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILogger _logger;
 
-        public PlayerController(ApplicationDbContext context)
+        public PlayerController(ApplicationDbContext context, ILogger logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: api/Player
