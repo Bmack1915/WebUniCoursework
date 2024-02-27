@@ -1,4 +1,7 @@
-﻿namespace WebCoursework;
+﻿using Microsoft.EntityFrameworkCore;
+using WebCoursework.Models;
+
+namespace WebCoursework;
 
 public class Program
 {
@@ -8,8 +11,11 @@ public class Program
 
         // Add services to the container.
         builder.Services.AddRazorPages();
-
+        builder.Services.AddDbContext<ApplicationDbContext>(options =>
+       options.UseSqlite(builder.Configuration.GetConnectionString("Connection")));
         var app = builder.Build();
+
+       
 
         // Configure the HTTP request pipeline.
         if (!app.Environment.IsDevelopment())
@@ -19,6 +25,7 @@ public class Program
             app.UseHsts();
         }
 
+        app.MapControllers();
         app.UseHttpsRedirection();
         app.UseStaticFiles();
 
