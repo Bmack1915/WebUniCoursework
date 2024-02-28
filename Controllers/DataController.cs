@@ -52,14 +52,21 @@ namespace WebCoursework.Controllers
             _context.Venue.Add(venue1);
             _context.Venue.Add(venue2);
 
-            string[] starting11 = {
+            string[] starting11utd = {
             "De Gea", "Shaw", "Bailly", "Maguire", "Wan-Bissaka",
             "Fred", "Pogba", "Sancho", "Fernandes", "Rashford", "Ronaldo"
             };
 
             int n = 0;
 
-            foreach (var player in starting11)
+            _context.Team.Add(new Team
+            {
+                Name = "Manchester United",
+                LeagueId = 1,
+                TeamId = 1
+            });
+
+            foreach (var player in starting11utd)
             {
                 n++;
                 _context.Player.Add(new Player
@@ -67,16 +74,31 @@ namespace WebCoursework.Controllers
                     Name = player,
                     PlayerId = n,
                     TeamId = 1
-                }) ;
+                });
             }
 
             _context.Team.Add(new Team
             {
-                Name = "UTD",
+                Name = "Read Madrid",
                 LeagueId = 1,
-                TeamId = 1
+                TeamId = 2
             });
 
+
+            string[] starting11rma = {
+            "Lunin", "Odriozola", "Nacho", "Militão", "Miguel Gutiérrez",
+              "Valverde", "Camavinga", "Kroos", "Asensio", "Vini Jr", "Benzema"};
+
+            foreach (var player in starting11rma)
+            {
+                n++;
+                _context.Player.Add(new Player
+                {
+                    Name = player,
+                    PlayerId = n,
+                    TeamId = 2
+                });
+            }
             await _context.SaveChangesAsync();
         }
 

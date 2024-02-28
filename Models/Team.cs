@@ -10,8 +10,6 @@ namespace WebCoursework.Models
 
         //FK
         public int LeagueId { get; set; }
-
-        [JsonIgnore]
         public List<Player>? Players { get; set; }
     }
 }

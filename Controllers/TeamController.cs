@@ -36,6 +36,10 @@ namespace WebCoursework.Controllers
         {
             var team = await _context.Team.FindAsync(id);
 
+            //Doesn't currently work
+            //var team = await _context.Team.Include(t => t.Players).FirstOrDefaultAsync(t => t.TeamId == id);
+            
+
             if (team == null)
             {
                 return NotFound();
