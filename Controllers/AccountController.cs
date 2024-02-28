@@ -14,6 +14,7 @@ namespace WebCoursework.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly EmailService _emailService;
+
         public AccountController(UserManager<IdentityUser> userManager,
        SignInManager<IdentityUser> signInManager, EmailService emailService)
         {
