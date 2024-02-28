@@ -33,7 +33,7 @@ namespace WebCoursework.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Player>> GetPlayer(int id)
         {
-            var player = await _context.Player.FindAsync(id);
+            var player = await _context.Player.Include(player => player.Team).FirstOrDefaultAsync(o => o.PlayerId == id);
 
             if (player == null)
             {
