@@ -14,9 +14,9 @@ namespace WebCoursework.Controllers
     public class PlayerController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-        private readonly ILogger _logger;
+        private readonly ILogger<PlayerController> _logger;
 
-        public PlayerController(ApplicationDbContext context, ILogger logger)
+        public PlayerController(ApplicationDbContext context, ILogger<PlayerController> logger)
         {
             _context = context;
             _logger = logger;
@@ -37,7 +37,7 @@ namespace WebCoursework.Controllers
 
             if (player == null)
             {
-                return NotFound();
+                return NotFound("This player does not exist");
             }
 
             return player;
@@ -74,11 +74,21 @@ namespace WebCoursework.Controllers
         }
 
         // POST: api/Player
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Player>> PostPlayer(Player player)
         {
-            if (player.Team != null & player.Name != null)
+            if (player.TeamId == 0)
+            {
+                return BadRequest("A new player must be assigned to a team. Please pass a team ID.");
+            }
+
+            if (!_context.Team.Any(c => c.TeamId == player.TeamId))
+            {
+                _logger.LogInformation($"Failed to find a team with Id ({player.TeamId})the user passed");
+                return BadRequest($"A team with the ID {player.TeamId} doesn't exist");
+            }
+
+            if (player.Name != null)
             {
                 _context.Player.Add(player);
                 await _context.SaveChangesAsync();

@@ -1,10 +1,8 @@
 ﻿using System;
 using Microsoft.Extensions.Options;
-using System.Net.Mail;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
-using Microsoft.Extensions.Options;
 
 namespace WebCoursework.Services
 {

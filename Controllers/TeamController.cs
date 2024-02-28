@@ -14,9 +14,9 @@ namespace WebCoursework.Controllers
     public class TeamController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-        private readonly ILogger _logger;
+        private readonly ILogger<TeamController> _logger;
 
-        public TeamController(ApplicationDbContext context, ILogger logger)
+        public TeamController(ApplicationDbContext context, ILogger<TeamController> logger)
         {
             _context = context;
             _logger = logger;

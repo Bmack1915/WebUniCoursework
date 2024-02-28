@@ -14,9 +14,9 @@ namespace WebCoursework.Controllers
     public class LeagueController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-        private readonly ILogger _logger;
+        private readonly ILogger<LeagueController> _logger;
 
-        public LeagueController(ApplicationDbContext context, ILogger logger)
+        public LeagueController(ApplicationDbContext context, ILogger<LeagueController> logger)
         {
             _context = context;
             _logger = logger;

@@ -22,9 +22,8 @@ public class Program
         .AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 
         //Register logger
-        using ILoggerFactory factory = LoggerFactory.Create(builder => builder.AddConsole());
-        ILogger logger = factory.CreateLogger("Program");
-        logger.LogInformation("Hello World! Logging is {Description}.", "fun");
+        builder.Services.AddLogging(action => action.AddConsole());
+
         //Email Services
         builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
         builder.Services.AddScoped<EmailService>();

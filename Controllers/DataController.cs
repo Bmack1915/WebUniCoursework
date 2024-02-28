@@ -9,20 +9,22 @@ using WebCoursework.Models;
 
 namespace WebCoursework.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class DataController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly ILogger _logger;
+        private readonly ILogger<DataController> _logger;
 
-        public DataController(ApplicationDbContext context, ILogger logger)
+        public DataController(ApplicationDbContext context, ILogger<DataController> logger)
         {
             _context = context;
             _logger = logger;
         }
 
-        // POST: api/DataGeneration
+        // POST: api/Data
         [HttpPost]
-        public IActionResult PostData()
+        public async Task Post()
         {
             //Create a league
             League league = new League()
@@ -75,9 +77,7 @@ namespace WebCoursework.Controllers
                 TeamId = 1
             });
 
-            _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetLeague", new { id = league.LeagueId }, league);
+            await _context.SaveChangesAsync();
         }
 
 

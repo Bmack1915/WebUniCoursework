@@ -14,9 +14,9 @@ namespace WebCoursework.Controllers
     public class MatchController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-        private readonly ILogger _logger;
+        private readonly ILogger<MatchController> _logger;
 
-        public MatchController(ApplicationDbContext context, ILogger logger)
+        public MatchController(ApplicationDbContext context, ILogger<MatchController> logger)
         {
             _context = context;
             _logger = logger;

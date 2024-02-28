@@ -11,12 +11,12 @@ namespace WebCoursework.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class VenueContext : ControllerBase
+    public class VenueController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-        private readonly ILogger _logger;
+        private readonly ILogger<VenueController> _logger;
 
-        public VenueContext(ApplicationDbContext context, ILogger logger)
+        public VenueController(ApplicationDbContext context, ILogger<VenueController> logger)
         {
             _context = context;
             _logger = logger;
