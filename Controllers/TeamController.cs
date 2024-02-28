@@ -75,7 +75,6 @@ namespace WebCoursework.Controllers
         }
 
         // POST: api/Team
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Team>> PostTeam(Team team)
         {

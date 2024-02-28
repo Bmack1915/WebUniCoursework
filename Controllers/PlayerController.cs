@@ -44,7 +44,6 @@ namespace WebCoursework.Controllers
         }
 
         // PUT: api/Player/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutPlayer(int id, Player player)
         {
@@ -79,10 +78,16 @@ namespace WebCoursework.Controllers
         [HttpPost]
         public async Task<ActionResult<Player>> PostPlayer(Player player)
         {
-            _context.Player.Add(player);
-            await _context.SaveChangesAsync();
+            if (player.Team != null & player.Name != null)
+            {
+                _context.Player.Add(player);
+                await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetPlayer", new { id = player.PlayerId }, player);
+                return CreatedAtAction("GetPlayer", new { id = player.PlayerId }, player);
+            }
+
+            return BadRequest();
+          
         }
 
         // DELETE: api/Player/5

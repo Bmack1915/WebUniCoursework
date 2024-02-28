@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using WebCoursework.Models;
 using Microsoft.Extensions.Logging;
+using WebCoursework.Services;
 
 namespace WebCoursework;
 
@@ -18,12 +19,15 @@ public class Program
 
         //Register Identity
         builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+        .AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 
         //Register logger
         using ILoggerFactory factory = LoggerFactory.Create(builder => builder.AddConsole());
         ILogger logger = factory.CreateLogger("Program");
         logger.LogInformation("Hello World! Logging is {Description}.", "fun");
+        //Email Services
+        builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+        builder.Services.AddScoped<EmailService>();
 
         var app = builder.Build();
 
