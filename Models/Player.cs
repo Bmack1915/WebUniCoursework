@@ -12,6 +12,7 @@ namespace WebCoursework.Models
 		//FK
 		public int TeamId { get; set; }
 
+		[JsonIgnore]
 		public Team? Team { get; set; }
 	}
 }
