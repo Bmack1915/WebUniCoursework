@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebCoursework.Models;
+using Microsoft.Extensions.Logging;
 
 namespace WebCoursework;
 
@@ -14,11 +15,15 @@ public class Program
         builder.Services.AddRazorPages();
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
        options.UseSqlite(builder.Configuration.GetConnectionString("Connection")));
+
+        //Register Identity
         builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 
         //Register logger
-
+        using ILoggerFactory factory = LoggerFactory.Create(builder => builder.AddConsole());
+        ILogger logger = factory.CreateLogger("Program");
+        logger.LogInformation("Hello World! Logging is {Description}.", "fun");
 
         var app = builder.Build();
 

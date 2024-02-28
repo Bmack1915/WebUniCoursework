@@ -22,7 +22,7 @@ namespace WebCoursework.Controllers
 
         // POST: api/DataGeneration
         [HttpPost]
-        public IActionResult PostDataGeneration()
+        public IActionResult PostData()
         {
             //Create a league
             League league = new League()
