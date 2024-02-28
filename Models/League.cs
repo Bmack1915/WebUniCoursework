@@ -9,7 +9,7 @@ namespace WebCoursework.Models
         public int LeagueId { get; set; }
         public string Name { get; set; }
 
-        [JsonIgnore]
+        //[JsonIgnore]
         public List<Team>? Teams { get; set; }
     }
 }

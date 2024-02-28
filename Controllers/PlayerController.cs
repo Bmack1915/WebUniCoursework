@@ -33,8 +33,11 @@ namespace WebCoursework.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Player>> GetPlayer(int id)
         {
-            var player = await _context.Player.Include(player => player.Team).FirstOrDefaultAsync(o => o.PlayerId == id);
+            //var player = await _context.Player
+            // .Include(p => p.Team)
+            //.FirstOrDefaultAsync(t => t.PlayerId == id);
 
+            var player = await _context.Player.FindAsync(id);
             if (player == null)
             {
                 return NotFound($"A Player with Id {id} does not exist");

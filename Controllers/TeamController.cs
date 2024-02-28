@@ -37,8 +37,8 @@ namespace WebCoursework.Controllers
             var team = await _context.Team.FindAsync(id);
 
             //Doesn't currently work
-            //var team = await _context.Team.Include(t => t.Players).FirstOrDefaultAsync(t => t.TeamId == id);
-            
+            //var team = await _context.Team.Include(Team => Team.Players).FirstOrDefaultAsync(Player => Player.TeamId == id);
+            //var teamWithPlayers = _context.Team.Include(t => t.Players).ToList();
 
             if (team == null)
             {
@@ -120,10 +120,18 @@ namespace WebCoursework.Controllers
             {
                 return TeamNotExistMessage(id);
             }
+
             var team = await _context.Team.FindAsync(id);
+
             if (team == null)
             {
                 return NotFound();
+            }
+
+            if (_context.Player.Any(p => p.TeamId == id))
+            {
+                _logger.LogInformation($"Failed to find a delete a team with Id ({id}) as it still contained players");
+                return BadRequest("You can't delete a team with players still on it");
             }
 
             _context.Team.Remove(team);

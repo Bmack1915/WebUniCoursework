@@ -33,8 +33,10 @@ namespace WebCoursework.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<League>> GetLeague(int id)
         {
-            var league = await _context.League.FindAsync(id);
+            //var league = await _context.League.FindAsync(id);
 
+            //Include list of teams
+            var league = await _context.League.Include(League => League.Teams).FirstOrDefaultAsync(Team => Team.LeagueId == id);
             if (league == null)
             {
                 return NotFound();

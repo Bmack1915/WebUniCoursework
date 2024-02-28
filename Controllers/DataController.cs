@@ -53,9 +53,10 @@ namespace WebCoursework.Controllers
             _context.Venue.Add(venue2);
 
             string[] starting11utd = {
-            "De Gea", "Shaw", "Bailly", "Maguire", "Wan-Bissaka",
-            "Fred", "Pogba", "Sancho", "Fernandes", "Rashford", "Ronaldo"
-            };
+            "Onana", "Amrabat", "Varane", "Maguire", "Dalot",
+            "Casemiro", "Mainoo", "Garnacho", "Fernandes", "Rashford", "Antony"
+              };
+
 
             int n = 0;
 
