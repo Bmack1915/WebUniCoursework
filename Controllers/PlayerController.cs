@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -33,17 +35,22 @@ namespace WebCoursework.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Player>> GetPlayer(int id)
         {
-            //var player = await _context.Player
-            // .Include(p => p.Team)
-            //.FirstOrDefaultAsync(t => t.PlayerId == id);
-
-            var player = await _context.Player.FindAsync(id);
+            var player = await _context.Player.Include(Player => Player.Team).FirstOrDefaultAsync(Team => Team.PlayerId == id);
+            //var player = await _context.Player.FindAsync(id);
             if (player == null)
             {
                 return NotFound($"A Player with Id {id} does not exist");
             }
 
-            return player;
+            var options = new JsonSerializerOptions
+            {
+                ReferenceHandler = ReferenceHandler.Preserve
+            };
+
+            var jsonString = JsonSerializer.Serialize(player, options);
+
+
+            return Ok(jsonString);
         }
 
         // PUT: api/Player/5

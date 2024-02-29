@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -44,6 +46,14 @@ namespace WebCoursework.Controllers
             {
                 return NotFound();
             }
+
+            //var options = new JsonSerializerOptions
+            //{
+            //    ReferenceHandler = ReferenceHandler.Preserve
+            //};
+
+            //var jsonString = JsonSerializer.Serialize(teamWithPlayers, options);
+
 
             return team;
         }
@@ -106,6 +116,13 @@ namespace WebCoursework.Controllers
                 _logger.LogInformation($"Failed to find a League with Id ({team.LeagueId}) that the user passed");
                 return BadRequest($"A League with the ID {team.LeagueId} doesn't exist");
             }
+
+            if (_context.Team.Count(t => t.LeagueId == team.LeagueId) >= 6)
+            {
+                _logger.LogInformation($"User attempted to add a team with to a League, ID: {team.LeagueId}, that is full");
+                return BadRequest($"League, ID: {team.LeagueId} cannot have more than 6 teams.");
+            }
+
             _context.Team.Add(team);
             await _context.SaveChangesAsync();
 
@@ -130,8 +147,8 @@ namespace WebCoursework.Controllers
 
             if (_context.Player.Any(p => p.TeamId == id))
             {
-                _logger.LogInformation($"Failed to find a delete a team with Id ({id}) as it still contained players");
-                return BadRequest("You can't delete a team with players still on it");
+                _logger.LogInformation($"Failed to delete a team, ID: ({id}) as it still contains players");
+                return BadRequest($"Team ID: {id} has players on it so can't be deleted.");
             }
 
             _context.Team.Remove(team);

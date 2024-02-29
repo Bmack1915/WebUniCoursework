@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -50,9 +51,14 @@ namespace WebCoursework.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutLeague(int id, League league)
         {
+            if (!LeagueExists(id))
+            {
+                return LeagueDoesntExistMessage(id);
+            }
             if (id != league.LeagueId)
             {
-                return BadRequest();
+                _logger.LogInformation($"URL ID {id} doesn't match request League ID {league.LeagueId}");
+                return BadRequest($"The player ID in the URL ({id}) does not match the player ID ({league.LeagueId}) in the request body");
             }
 
             _context.Entry(league).State = EntityState.Modified;
@@ -76,11 +82,18 @@ namespace WebCoursework.Controllers
             return NoContent();
         }
 
+       
+
         // POST: api/League
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<League>> PostLeague(League league)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             _context.League.Add(league);
             await _context.SaveChangesAsync();
 
@@ -106,6 +119,12 @@ namespace WebCoursework.Controllers
         private bool LeagueExists(int id)
         {
             return _context.League.Any(e => e.LeagueId == id);
+        }
+
+        private IActionResult LeagueDoesntExistMessage(int id)
+        {
+            _logger.LogInformation($"Failed to find a League with Id ({id}) passed by the user");
+            return BadRequest($"A League with ID {id} does not exist");
         }
     }
 }
