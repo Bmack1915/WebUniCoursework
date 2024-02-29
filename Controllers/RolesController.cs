@@ -12,7 +12,6 @@ namespace WebCoursework.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin")]
     public class RolesController : ControllerBase
     {
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -54,7 +53,6 @@ namespace WebCoursework.Controllers
             {
                 return Ok("Role created successfully.");
             }
-
             return BadRequest(result.Errors);
         }
 

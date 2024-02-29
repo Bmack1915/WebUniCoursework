@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +12,7 @@ using WebCoursework.Models;
 
 namespace WebCoursework.Controllers
 {
+    [Authorize(Roles = "User")]
     [Route("api/[controller]")]
     [ApiController]
     public class LeagueController : ControllerBase
@@ -49,6 +52,7 @@ namespace WebCoursework.Controllers
         // PUT: api/League/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> PutLeague(int id, League league)
         {
             if (!LeagueExists(id))
@@ -87,6 +91,7 @@ namespace WebCoursework.Controllers
         // POST: api/League
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<League>> PostLeague(League league)
         {
             if (!ModelState.IsValid)
@@ -102,6 +107,7 @@ namespace WebCoursework.Controllers
 
         // DELETE: api/League/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteLeague(int id)
         {
             var league = await _context.League.FindAsync(id);

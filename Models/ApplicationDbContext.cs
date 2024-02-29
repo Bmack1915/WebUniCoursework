@@ -18,6 +18,8 @@ namespace WebCoursework.Models
         public DbSet<WebCoursework.Models.Team> Team { get; set; } = default!;
         public DbSet<WebCoursework.Models.Venue> Venue { get; set; } = default!;
 
+       
+
     }
 }
 

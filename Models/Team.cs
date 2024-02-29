@@ -10,6 +10,7 @@ namespace WebCoursework.Models
 
         //FK
         public int LeagueId { get; set; }
+
         public List<Player>? Players { get; set; }
     }
 }
