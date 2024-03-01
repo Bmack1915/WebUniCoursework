@@ -7,6 +7,7 @@ using WebCoursework.Controllers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Configuration;
 
 namespace WebCoursework;
 
@@ -18,8 +19,10 @@ public class Program
 
         // Add services to the container.
         builder.Services.AddRazorPages();
+
+        //Npgsql connection
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
-       options.UseSqlite(builder.Configuration.GetConnectionString("Connection")));
+        options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
         //Register Identity
         builder.Services.AddIdentity<IdentityUser, IdentityRole>()
