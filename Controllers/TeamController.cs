@@ -14,7 +14,7 @@ using WebCoursework.Models;
 
 namespace WebCoursework.Controllers
 {
-    //[Authorize(Roles = "User")]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class TeamController : ControllerBase
