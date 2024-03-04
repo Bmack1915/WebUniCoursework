@@ -11,7 +11,6 @@ using WebCoursework.Models;
 
 namespace WebCoursework.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class VenueController : ControllerBase
@@ -40,7 +39,7 @@ namespace WebCoursework.Controllers
 
             if (venue == null)
             {
-                return NotFound();
+                return NotFound("Venue not found");
             }
 
             return venue;
