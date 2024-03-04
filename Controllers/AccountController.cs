@@ -40,10 +40,6 @@ namespace IdentityPractice.Controllers
 
             if (result.Succeeded)
             {
-                return Ok("Role created successfully.");
-            }
-            if (result.Succeeded)
-            {
                 // Generate an email verification token
                 var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 

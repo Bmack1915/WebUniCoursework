@@ -7,6 +7,7 @@ using WebCoursework.Controllers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Reflection.Metadata; 
 
 namespace WebCoursework;
 
@@ -35,6 +36,7 @@ public class Program
         //JwtToken Service
         builder.Services.AddScoped<RolesController>();
 
+
         builder.Services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -56,6 +58,31 @@ public class Program
 
 
         var app = builder.Build();
+
+        using var scope = app.Services.CreateScope();
+        var services = scope.ServiceProvider;
+
+        try
+        {
+            var context = services.GetRequiredService<ApplicationDbContext>();
+            if (!context.Roles.Any(r => r.Name == "Admin"))
+            {
+                context.Roles.Add(new IdentityRole("Admin"));
+
+            }
+
+            if (!context.Roles.Any(r => r.Name == "User"))
+            {
+                context.Roles.Add(new IdentityRole("User"));
+            }
+
+            context.SaveChanges();
+
+        }
+        catch (Exception ex)
+        {
+
+        }
 
         // Configure the HTTP request pipeline.
         if (!app.Environment.IsDevelopment())

@@ -11,6 +11,7 @@ namespace WebCoursework.Models
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
+
         }
         public DbSet<WebCoursework.Models.League> League { get; set; } = default!;
         public DbSet<WebCoursework.Models.Match> Match { get; set; } = default!;
@@ -18,7 +19,7 @@ namespace WebCoursework.Models
         public DbSet<WebCoursework.Models.Team> Team { get; set; } = default!;
         public DbSet<WebCoursework.Models.Venue> Venue { get; set; } = default!;
 
-       
+        
 
     }
 }
