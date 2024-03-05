@@ -30,6 +30,7 @@ namespace WebCoursework.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<League>>> GetLeague()
         {
+            _logger.LogInformation("Leagues successfully retrieved");
             return await _context.League.ToListAsync();
         }
 
@@ -37,15 +38,13 @@ namespace WebCoursework.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<League>> GetLeague(int id)
         {
-            //var league = await _context.League.FindAsync(id);
-
             //Include list of teams
             var league = await _context.League.Include(League => League.Teams).FirstOrDefaultAsync(Team => Team.LeagueId == id);
             if (league == null)
             {
                 return NotFound();
             }
-
+            _logger.LogInformation($"League (ID: {id}) successfully retrieved");
             return league;
         }
 
@@ -70,6 +69,7 @@ namespace WebCoursework.Controllers
             try
             {
                 await _context.SaveChangesAsync();
+                
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -83,13 +83,13 @@ namespace WebCoursework.Controllers
                 }
             }
 
+            _logger.LogInformation($"League (ID: {league.LeagueId}) successfully edited");
             return NoContent();
         }
 
        
 
         // POST: api/League
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<League>> PostLeague(League league)
@@ -101,7 +101,7 @@ namespace WebCoursework.Controllers
 
             _context.League.Add(league);
             await _context.SaveChangesAsync();
-
+            _logger.LogInformation($"League (ID: {league.LeagueId}) successfully created");
             return CreatedAtAction("GetLeague", new { id = league.LeagueId }, league);
         }
 
@@ -118,7 +118,7 @@ namespace WebCoursework.Controllers
 
             _context.League.Remove(league);
             await _context.SaveChangesAsync();
-
+            _logger.LogInformation($"League (ID: {id}) successfully edited");
             return NoContent();
         }
 

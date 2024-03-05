@@ -30,7 +30,7 @@ namespace WebCoursework.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Player>>> GetPlayer()
         {
-            //_logger.LogInformation("")
+            _logger.LogInformation("List of players successfully retrieved");
             return await _context.Player.ToListAsync();
         }
 
@@ -52,6 +52,7 @@ namespace WebCoursework.Controllers
             };
 
             var jsonString = JsonSerializer.Serialize(player, options);
+            _logger.LogInformation($"Player with ID: {id} successfully retrieved");
             return Ok(jsonString);
         }
 
@@ -120,7 +121,7 @@ namespace WebCoursework.Controllers
             {
                 _context.Player.Add(player);
                 await _context.SaveChangesAsync();
-
+                _logger.LogInformation($"Player (ID: {player.PlayerId}) added");
                 return CreatedAtAction("GetPlayer", new { id = player.PlayerId }, player);
             }
 
@@ -148,6 +149,7 @@ namespace WebCoursework.Controllers
 
             _context.Player.Remove(player);
             await _context.SaveChangesAsync();
+            _logger.LogInformation($"Player (ID: {player.PlayerId}) deleted");
 
             return NoContent();
         }

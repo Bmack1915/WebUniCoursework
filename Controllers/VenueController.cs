@@ -33,6 +33,7 @@ namespace WebCoursework.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Venue>>> GetVenue()
         {
+            _logger.LogInformation("Venues successfully retrieved");
             return await _context.Venue.ToListAsync();
         }
 
@@ -46,7 +47,7 @@ namespace WebCoursework.Controllers
             {
                 return NotFound("Venue not found");
             }
-
+            _logger.LogInformation($"Venue (ID: {id}) successfully retrieved");
             return venue;
         }
 
@@ -93,7 +94,7 @@ namespace WebCoursework.Controllers
                     throw;
                 }
             }
-
+            _logger.LogInformation($"Venue (ID: {venue.VenueId}) successfully edited");
             return NoContent();
         }
 
@@ -111,7 +112,7 @@ namespace WebCoursework.Controllers
 
             _context.Venue.Add(venue);
             await _context.SaveChangesAsync();
-
+            _logger.LogInformation($"Venue (ID: {venue.VenueId}) successfully created");
             return CreatedAtAction("GetVenue", new { id = venue.VenueId }, venue);
         }
 
@@ -139,7 +140,7 @@ namespace WebCoursework.Controllers
 
             _context.Venue.Remove(venue);
             await _context.SaveChangesAsync();
-
+            _logger.LogInformation($"Venue (ID: {id}) successfully deleted");
             return NoContent();
         }
 

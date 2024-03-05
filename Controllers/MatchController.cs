@@ -30,6 +30,7 @@ namespace WebCoursework.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Match>>> GetMatch()
         {
+            _logger.LogInformation($"Matches successfully retrieved");
             return await _context.Match.ToListAsync();
         }
 
@@ -43,7 +44,7 @@ namespace WebCoursework.Controllers
             {
                 return NotFound("Match not found");
             }
-
+            _logger.LogInformation($"Match (ID: {match.MatchId}) successfully retrieved");
             return match;
         }
 
@@ -105,7 +106,7 @@ namespace WebCoursework.Controllers
                     throw;
                 }
             }
-
+            _logger.LogInformation($"Match (ID: {match.MatchId}) successfully edited");
             return NoContent();
         }
 
@@ -136,7 +137,7 @@ namespace WebCoursework.Controllers
 
             _context.Match.Add(match);
             await _context.SaveChangesAsync();
-
+            _logger.LogInformation($"Match (ID: {match.MatchId}) successfully created");
             return CreatedAtAction("GetMatch", new { id = match.MatchId }, match);
         }
 
@@ -158,7 +159,7 @@ namespace WebCoursework.Controllers
 
             _context.Match.Remove(match);
             await _context.SaveChangesAsync();
-
+            _logger.LogInformation($"Match (ID: {match.MatchId}) successfully deleted");
             return NoContent();
         }
 

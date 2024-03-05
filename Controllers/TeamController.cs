@@ -32,6 +32,7 @@ namespace WebCoursework.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Team>>> GetTeam()
         {
+            _logger.LogInformation("List of team successfully retrieved");
             return await _context.Team.ToListAsync();
         }
 
@@ -45,7 +46,7 @@ namespace WebCoursework.Controllers
             {
                 return NotFound();
             }
-
+            _logger.LogInformation($"Team (ID: {id}) successfully retrieved");
             return team;
         }
 
@@ -77,6 +78,7 @@ namespace WebCoursework.Controllers
             try
             {
                 await _context.SaveChangesAsync();
+                _logger.LogInformation($"Team (ID: {id}) successfully edited");
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -118,6 +120,7 @@ namespace WebCoursework.Controllers
 
             _context.Team.Add(team);
             await _context.SaveChangesAsync();
+            _logger.LogInformation($"Team (ID: {team.TeamId}) successfully added");
 
             return CreatedAtAction("GetTeam", new { id = team.TeamId }, team);
         }
@@ -147,6 +150,7 @@ namespace WebCoursework.Controllers
 
             _context.Team.Remove(team);
             await _context.SaveChangesAsync();
+            _logger.LogInformation($"Team (ID: {id}) successfully deleted");
 
             return NoContent();
         }

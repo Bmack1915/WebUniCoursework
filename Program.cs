@@ -61,29 +61,30 @@ public class Program
 
         using var scope = app.Services.CreateScope();
         var services = scope.ServiceProvider;
-
         try
         {
             var context = services.GetRequiredService<ApplicationDbContext>();
             if (!context.Roles.Any(r => r.Name == "Admin"))
             {
-                //context.Roles.Add(new IdentityRole("Admin"));
-                context.Roles.FirstOrDefault(role => role.Name == "Admin").NormalizedName = "ADMIN";
+                var adminRole = new IdentityRole("Admin");
+                adminRole.NormalizedName = "ADMIN";
+                context.Roles.Add(adminRole);
             }
 
             if (!context.Roles.Any(r => r.Name == "User"))
             {
-                //context.Roles.Add(new IdentityRole("User"));
-                context.Roles.FirstOrDefault(role => role.Name == "User").NormalizedName = "USER";
+                var userRole = new IdentityRole("User");
+                userRole.NormalizedName = "USER";
+                context.Roles.Add(userRole);
             }
 
             context.SaveChanges();
-
         }
         catch (Exception ex)
         {
-
+          
         }
+
 
 
         // Configure the HTTP request pipeline.

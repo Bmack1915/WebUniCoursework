@@ -11,7 +11,7 @@ using WebCoursework.Models;
 namespace WebCoursework.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240305115914_InitialCreate")]
+    [Migration("20240305150024_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
