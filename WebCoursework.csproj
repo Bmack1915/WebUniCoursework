@@ -17,6 +17,7 @@
     <None Remove="Models\" />
     <None Remove="Controllers\" />
     <None Remove="Services\" />
+    <None Remove="SportsLeague.db" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.2" />
@@ -42,6 +43,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Models\ApplicationDbContext.cs" Condition=" '$(EnableDefaultCompileItems)' == 'true' ">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SportsLeague.db">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
