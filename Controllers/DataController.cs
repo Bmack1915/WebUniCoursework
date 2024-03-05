@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebCoursework.Models;
 
@@ -9,9 +11,10 @@ using WebCoursework.Models;
 
 namespace WebCoursework.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
-    public class DataController : Controller
+    public class DataController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
         private readonly ILogger<DataController> _logger;
@@ -31,6 +34,12 @@ namespace WebCoursework.Controllers
             {
                 LeagueId = 1,
                 Name = "Division 1"
+            };
+
+            League league2 = new League()
+            {
+                LeagueId = 2,
+                Name = "Division 2"
             };
 
             _context.League.Add(league);
@@ -80,7 +89,7 @@ namespace WebCoursework.Controllers
 
             _context.Team.Add(new Team
             {
-                Name = "Read Madrid",
+                Name = "Real Madrid",
                 LeagueId = 1,
                 TeamId = 2
             });
@@ -100,14 +109,39 @@ namespace WebCoursework.Controllers
                     TeamId = 2
                 });
             }
+
+            _context.Match.Add(new Match()
+            {
+                HomeTeamId = 1,
+                AwayTeamId = 2,
+                VenueId = 1,
+                HomeTeamScore = 5,
+                AwayTeamScore = 0,
+                Date = DateTime.Today
+            });
+
+
+            _context.Match.Add(new Match()
+            {
+                HomeTeamId = 2,
+                AwayTeamId = 1,
+                VenueId = 2,
+                HomeTeamScore = 0,
+                AwayTeamScore = 4,
+                Date = DateTime.Now.AddDays(-7)
+            });
+
+            _context.Match.Add(new Match()
+            {
+                HomeTeamId = 2,
+                AwayTeamId = 1,
+                VenueId = 2,
+                HomeTeamScore = 1,
+                AwayTeamScore = 3,
+                Date = DateTime.Now.AddDays(-14)
+            });
+
             await _context.SaveChangesAsync();
-        }
-
-
-        // GET: /<controller>/
-        public IActionResult Index()
-        {
-            return View();
         }
     }
 }

@@ -10,6 +10,7 @@ using WebCoursework.Models;
 
 namespace WebCoursework.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class RolesController : ControllerBase
@@ -107,7 +108,8 @@ namespace WebCoursework.Controllers
                 return NotFound("User not found.");
             }
 
-            var roleExists = await _roleManager.RoleExistsAsync(model.RoleName);
+           var roleExists = await _roleManager.RoleExistsAsync(model.RoleName);
+           //var roleExists =_roleManager.Roles.Any(r => r.Name == model.RoleName);
 
             if (!roleExists)
             {
