@@ -12,7 +12,7 @@ using WebCoursework.Models;
 
 namespace WebCoursework.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin,User")]
     [Route("api/[controller]")]
     [ApiController]
     public class PlayerController : ControllerBase
@@ -30,6 +30,7 @@ namespace WebCoursework.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Player>>> GetPlayer()
         {
+            _logger.LogInformation("List of players successfully retrieved");
             return await _context.Player.ToListAsync();
         }
 
@@ -37,8 +38,9 @@ namespace WebCoursework.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Player>> GetPlayer(int id)
         {
+            //Include players team in when it's returned.
             var player = await _context.Player.Include(Player => Player.Team).FirstOrDefaultAsync(Team => Team.PlayerId == id);
-            //var player = await _context.Player.FindAsync(id);
+
             if (player == null)
             {
                 return NotFound($"A Player with Id {id} does not exist");
@@ -50,12 +52,12 @@ namespace WebCoursework.Controllers
             };
 
             var jsonString = JsonSerializer.Serialize(player, options);
-
-
+            _logger.LogInformation($"Player with ID: {id} successfully retrieved");
             return Ok(jsonString);
         }
 
         // PUT: api/Player/5
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutPlayer(int id, Player player)
         {
@@ -99,6 +101,7 @@ namespace WebCoursework.Controllers
         }
 
         // POST: api/Player
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<Player>> PostPlayer(Player player)
         {
@@ -118,7 +121,7 @@ namespace WebCoursework.Controllers
             {
                 _context.Player.Add(player);
                 await _context.SaveChangesAsync();
-
+                _logger.LogInformation($"Player (ID: {player.PlayerId}) added");
                 return CreatedAtAction("GetPlayer", new { id = player.PlayerId }, player);
             }
 
@@ -127,6 +130,7 @@ namespace WebCoursework.Controllers
         }
 
         // DELETE: api/Player/5
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePlayer(int id)
         {
@@ -145,6 +149,7 @@ namespace WebCoursework.Controllers
 
             _context.Player.Remove(player);
             await _context.SaveChangesAsync();
+            _logger.LogInformation($"Player (ID: {player.PlayerId}) deleted");
 
             return NoContent();
         }

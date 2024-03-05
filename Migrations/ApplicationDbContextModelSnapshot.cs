@@ -233,13 +233,16 @@ namespace WebCoursework.Migrations
                     b.Property<int>("AwayTeamId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("AwayTeamScore")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTime>("Date")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("HomeTeadId")
+                    b.Property<int>("HomeTeamId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("HomeTeamTeamId")
+                    b.Property<int>("HomeTeamScore")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("VenueId")
@@ -249,7 +252,7 @@ namespace WebCoursework.Migrations
 
                     b.HasIndex("AwayTeamId");
 
-                    b.HasIndex("HomeTeamTeamId");
+                    b.HasIndex("HomeTeamId");
 
                     b.HasIndex("VenueId");
 
@@ -282,7 +285,7 @@ namespace WebCoursework.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("LeagueId")
+                    b.Property<int>("LeagueId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
@@ -375,7 +378,7 @@ namespace WebCoursework.Migrations
 
                     b.HasOne("WebCoursework.Models.Team", "HomeTeam")
                         .WithMany()
-                        .HasForeignKey("HomeTeamTeamId")
+                        .HasForeignKey("HomeTeamId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -394,18 +397,22 @@ namespace WebCoursework.Migrations
 
             modelBuilder.Entity("WebCoursework.Models.Player", b =>
                 {
-                    b.HasOne("WebCoursework.Models.Team", null)
+                    b.HasOne("WebCoursework.Models.Team", "Team")
                         .WithMany("Players")
                         .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Team");
                 });
 
             modelBuilder.Entity("WebCoursework.Models.Team", b =>
                 {
                     b.HasOne("WebCoursework.Models.League", null)
                         .WithMany("Teams")
-                        .HasForeignKey("LeagueId");
+                        .HasForeignKey("LeagueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("WebCoursework.Models.League", b =>

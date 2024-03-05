@@ -14,7 +14,7 @@ using WebCoursework.Models;
 
 namespace WebCoursework.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin,User")]
     [Route("api/[controller]")]
     [ApiController]
     public class TeamController : ControllerBase
@@ -32,6 +32,7 @@ namespace WebCoursework.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Team>>> GetTeam()
         {
+            _logger.LogInformation("List of team successfully retrieved");
             return await _context.Team.ToListAsync();
         }
 
@@ -41,31 +42,20 @@ namespace WebCoursework.Controllers
         {
             var team = await _context.Team.FindAsync(id);
 
-            //Doesn't currently work
-            //var team = await _context.Team.Include(Team => Team.Players).FirstOrDefaultAsync(Player => Player.TeamId == id);
-            //var teamWithPlayers = _context.Team.Include(t => t.Players).ToList();
-
             if (team == null)
             {
                 return NotFound();
             }
-
-            //var options = new JsonSerializerOptions
-            //{
-            //    ReferenceHandler = ReferenceHandler.Preserve
-            //};
-
-            //var jsonString = JsonSerializer.Serialize(teamWithPlayers, options);
-
-
+            _logger.LogInformation($"Team (ID: {id}) successfully retrieved");
             return team;
         }
 
         // PUT: api/Team/5
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTeam(int id, Team team)
         {
-            //Player doesn't exist
+            //Team doesn't exist
             if (!TeamExists(id))
             {
                 return TeamNotExistMessage(id);
@@ -88,6 +78,7 @@ namespace WebCoursework.Controllers
             try
             {
                 await _context.SaveChangesAsync();
+                _logger.LogInformation($"Team (ID: {id}) successfully edited");
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -105,6 +96,7 @@ namespace WebCoursework.Controllers
         }
 
         // POST: api/Team
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<Team>> PostTeam(Team team)
         {
@@ -128,11 +120,13 @@ namespace WebCoursework.Controllers
 
             _context.Team.Add(team);
             await _context.SaveChangesAsync();
+            _logger.LogInformation($"Team (ID: {team.TeamId}) successfully added");
 
             return CreatedAtAction("GetTeam", new { id = team.TeamId }, team);
         }
 
         // DELETE: api/Team/5
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTeam(int id)
         {
@@ -156,6 +150,7 @@ namespace WebCoursework.Controllers
 
             _context.Team.Remove(team);
             await _context.SaveChangesAsync();
+            _logger.LogInformation($"Team (ID: {id}) successfully deleted");
 
             return NoContent();
         }

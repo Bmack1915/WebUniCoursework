@@ -6,25 +6,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WebCoursework.Migrations
 {
     /// <inheritdoc />
-    public partial class IdentityAdded : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Player_Team_TeamId",
-                table: "Player");
-
-            migrationBuilder.AlterColumn<int>(
-                name: "TeamId",
-                table: "Player",
-                type: "INTEGER",
-                nullable: false,
-                defaultValue: 0,
-                oldClrType: typeof(int),
-                oldType: "INTEGER",
-                oldNullable: true);
-
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -62,6 +48,33 @@ namespace WebCoursework.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "League",
+                columns: table => new
+                {
+                    LeagueId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_League", x => x.LeagueId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Venue",
+                columns: table => new
+                {
+                    VenueId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    Capacity = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Venue", x => x.VenueId);
                 });
 
             migrationBuilder.CreateTable(
@@ -170,6 +183,82 @@ namespace WebCoursework.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Team",
+                columns: table => new
+                {
+                    TeamId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    LeagueId = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Team", x => x.TeamId);
+                    table.ForeignKey(
+                        name: "FK_Team_League_LeagueId",
+                        column: x => x.LeagueId,
+                        principalTable: "League",
+                        principalColumn: "LeagueId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Match",
+                columns: table => new
+                {
+                    MatchId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Date = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    VenueId = table.Column<int>(type: "INTEGER", nullable: false),
+                    HomeTeamId = table.Column<int>(type: "INTEGER", nullable: false),
+                    AwayTeamId = table.Column<int>(type: "INTEGER", nullable: false),
+                    HomeTeamScore = table.Column<int>(type: "INTEGER", nullable: false),
+                    AwayTeamScore = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Match", x => x.MatchId);
+                    table.ForeignKey(
+                        name: "FK_Match_Team_AwayTeamId",
+                        column: x => x.AwayTeamId,
+                        principalTable: "Team",
+                        principalColumn: "TeamId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Match_Team_HomeTeamId",
+                        column: x => x.HomeTeamId,
+                        principalTable: "Team",
+                        principalColumn: "TeamId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Match_Venue_VenueId",
+                        column: x => x.VenueId,
+                        principalTable: "Venue",
+                        principalColumn: "VenueId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Player",
+                columns: table => new
+                {
+                    PlayerId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    TeamId = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Player", x => x.PlayerId);
+                    table.ForeignKey(
+                        name: "FK_Player_Team_TeamId",
+                        column: x => x.TeamId,
+                        principalTable: "Team",
+                        principalColumn: "TeamId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -207,22 +296,35 @@ namespace WebCoursework.Migrations
                 column: "NormalizedUserName",
                 unique: true);
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_Player_Team_TeamId",
+            migrationBuilder.CreateIndex(
+                name: "IX_Match_AwayTeamId",
+                table: "Match",
+                column: "AwayTeamId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Match_HomeTeamId",
+                table: "Match",
+                column: "HomeTeamId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Match_VenueId",
+                table: "Match",
+                column: "VenueId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Player_TeamId",
                 table: "Player",
-                column: "TeamId",
-                principalTable: "Team",
-                principalColumn: "TeamId",
-                onDelete: ReferentialAction.Cascade);
+                column: "TeamId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Team_LeagueId",
+                table: "Team",
+                column: "LeagueId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Player_Team_TeamId",
-                table: "Player");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -239,25 +341,25 @@ namespace WebCoursework.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Match");
+
+            migrationBuilder.DropTable(
+                name: "Player");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
-            migrationBuilder.AlterColumn<int>(
-                name: "TeamId",
-                table: "Player",
-                type: "INTEGER",
-                nullable: true,
-                oldClrType: typeof(int),
-                oldType: "INTEGER");
+            migrationBuilder.DropTable(
+                name: "Venue");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_Player_Team_TeamId",
-                table: "Player",
-                column: "TeamId",
-                principalTable: "Team",
-                principalColumn: "TeamId");
+            migrationBuilder.DropTable(
+                name: "Team");
+
+            migrationBuilder.DropTable(
+                name: "League");
         }
     }
 }

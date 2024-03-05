@@ -40,10 +40,6 @@ namespace IdentityPractice.Controllers
 
             if (result.Succeeded)
             {
-                return Ok("Role created successfully.");
-            }
-            if (result.Succeeded)
-            {
                 // Generate an email verification token
                 var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
@@ -88,17 +84,25 @@ namespace IdentityPractice.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(AuthModel model)
         {
-            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, isPersistent: false, lockoutOnFailure: false);
-
-            if (result.Succeeded)
+            try
             {
-                var user = await _userManager.FindByEmailAsync(model.Email);
-                var roles = await _userManager.GetRolesAsync(user);
-                var token = GenerateJwtToken(user, roles);
-                return Ok(new { Token = token });
-            }
+                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, isPersistent: false, lockoutOnFailure: false);
 
-            return Unauthorized("Invalid login attempt.");
+                if (result.Succeeded)
+                {
+                    var user = await _userManager.FindByEmailAsync(model.Email);
+                    var roles = await _userManager.GetRolesAsync(user);
+                    var token = GenerateJwtToken(user, roles);
+                    return Ok(new { Token = token });
+                }
+
+                return Unauthorized("Invalid login attempt.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+           
         }
 
         [HttpPost("logout")]
