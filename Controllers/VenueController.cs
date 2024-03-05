@@ -11,6 +11,7 @@ using WebCoursework.Models;
 
 namespace WebCoursework.Controllers
 {
+    [Authorize(Roles = "Admin,User")]
     [Route("api/[controller]")]
     [ApiController]
     public class VenueController : ControllerBase
@@ -77,7 +78,7 @@ namespace WebCoursework.Controllers
         }
 
         // POST: api/VenueContext
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<Venue>> PostVenue(Venue venue)
         {
@@ -88,6 +89,7 @@ namespace WebCoursework.Controllers
         }
 
         // DELETE: api/VenueContext/5
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteVenue(int id)
         {

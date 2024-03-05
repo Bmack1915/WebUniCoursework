@@ -12,6 +12,7 @@ using WebCoursework.Models;
 
 namespace WebCoursework.Controllers
 {
+    [Authorize(Roles = "Admin,User")]
     [Route("api/[controller]")]
     [ApiController]
     public class LeagueController : ControllerBase

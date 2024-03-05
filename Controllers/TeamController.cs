@@ -14,6 +14,7 @@ using WebCoursework.Models;
 
 namespace WebCoursework.Controllers
 {
+    [Authorize(Roles = "Admin,User")]
     [Route("api/[controller]")]
     [ApiController]
     public class TeamController : ControllerBase
@@ -61,6 +62,7 @@ namespace WebCoursework.Controllers
         }
 
         // PUT: api/Team/5
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTeam(int id, Team team)
         {
@@ -104,6 +106,7 @@ namespace WebCoursework.Controllers
         }
 
         // POST: api/Team
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<Team>> PostTeam(Team team)
         {
@@ -132,6 +135,7 @@ namespace WebCoursework.Controllers
         }
 
         // DELETE: api/Team/5
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTeam(int id)
         {

@@ -11,6 +11,7 @@ using WebCoursework.Models;
 
 namespace WebCoursework.Controllers
 {
+    [Authorize(Roles = "Admin,User")]
     [Route("api/[controller]")]
     [ApiController]
     public class MatchController : ControllerBase
@@ -48,6 +49,7 @@ namespace WebCoursework.Controllers
 
         // PUT: api/Match/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutMatch(int id, Match match)
         {
@@ -79,6 +81,7 @@ namespace WebCoursework.Controllers
 
         // POST: api/Match
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<Match>> PostMatch(Match match)
         {
@@ -89,6 +92,7 @@ namespace WebCoursework.Controllers
         }
 
         // DELETE: api/Match/5
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMatch(int id)
         {
