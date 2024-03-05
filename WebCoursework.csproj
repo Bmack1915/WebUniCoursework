@@ -34,17 +34,14 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.2" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Remove="Models\ApplicationDbContext.cs" />
-  </ItemGroup>
-  <ItemGroup>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Models\ApplicationDbContext.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
     <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Models\ApplicationDbContext.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Models\ApplicationDbContext.cs" Condition=" '$(EnableDefaultCompileItems)' == 'true' ">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
     <EmbeddedResource Include="SportsLeague.db">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
