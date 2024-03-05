@@ -67,13 +67,14 @@ public class Program
             var context = services.GetRequiredService<ApplicationDbContext>();
             if (!context.Roles.Any(r => r.Name == "Admin"))
             {
-                context.Roles.Add(new IdentityRole("Admin"));
-
+                //context.Roles.Add(new IdentityRole("Admin"));
+                context.Roles.FirstOrDefault(role => role.Name == "Admin").NormalizedName = "ADMIN";
             }
 
             if (!context.Roles.Any(r => r.Name == "User"))
             {
-                context.Roles.Add(new IdentityRole("User"));
+                //context.Roles.Add(new IdentityRole("User"));
+                context.Roles.FirstOrDefault(role => role.Name == "User").NormalizedName = "USER";
             }
 
             context.SaveChanges();
@@ -83,6 +84,7 @@ public class Program
         {
 
         }
+
 
         // Configure the HTTP request pipeline.
         if (!app.Environment.IsDevelopment())
