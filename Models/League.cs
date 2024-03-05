@@ -8,10 +8,9 @@ namespace WebCoursework.Models
 	public class League
 	{
         public int LeagueId { get; set; }
-        [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }
 
-        //[JsonIgnore]
+        [JsonIgnore]
         public List<Team>? Teams { get; set; }
     }
 }

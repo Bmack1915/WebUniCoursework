@@ -53,6 +53,36 @@ namespace WebCoursework.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutMatch(int id, Match match)
         {
+            //Match doesn't exist
+            if (!MatchExists(id))
+            {
+                return MatchNotExistMessage(id);
+            }
+
+            if (id != match.MatchId)
+            {
+                _logger.LogInformation($"URL ID {id} doesn't match request Match ID {match.MatchId}");
+                return BadRequest($"The Match ID in the URL, ({id}), does not match the Match ID, ({match.MatchId}), in the request body");
+            }
+
+            if (!AreTeamIdsValid(match.HomeTeamId, match.AwayTeamId))
+            {
+                _logger.LogInformation("Admin attempted to edit a match but did not provide a TeamId for both teams");
+                return BadRequest("A match must involve two teams, please pass a valid team ID for both teams.");
+            }
+
+            if (!AreScoresValid(match.HomeTeamScore, match.AwayTeamScore))
+            {
+                _logger.LogInformation("Admin attempted to edit a match without assigning them to a League");
+                return BadRequest("A match score must involve a score from each team, please pass a valid scoreline for each team.");
+            }
+
+            if (match.VenueId == null || !_context.Venue.Any(v => v.VenueId == match.VenueId))
+            {
+                _logger.LogInformation($"An invalid Venue ID, {match.VenueId}, was passed when editing a match");
+                return BadRequest($"An invalid Venue ID, {match.VenueId}, was passed when editing a match, please pass a valid venue ID for this match");
+            }
+
             if (id != match.MatchId)
             {
                 return BadRequest();
@@ -85,6 +115,25 @@ namespace WebCoursework.Controllers
         [HttpPost]
         public async Task<ActionResult<Match>> PostMatch(Match match)
         {
+
+            if (!AreTeamIdsValid(match.HomeTeamId, match.AwayTeamId))
+            {
+                _logger.LogInformation("Admin attempted to edit a match but did not provide a TeamId for both teams");
+                return BadRequest("A match must involve two teams, please pass a valid team ID for both teams.");
+            }
+
+            if (!AreScoresValid(match.HomeTeamScore, match.AwayTeamScore))
+            {
+                _logger.LogInformation("Admin attempted to edit a match without assigning them to a League");
+                return BadRequest("A match score must involve a score from each team, please pass a valid scoreline for each team.");
+            }
+
+            if (match.VenueId == null || !_context.Venue.Any(v => v.VenueId == match.VenueId))
+            {
+                _logger.LogInformation($"An invalid Venue ID, {match.VenueId}, was passed when editing a match");
+                return BadRequest($"An invalid Venue ID, {match.VenueId}, was passed when editing a match, please pass a valid venue ID for this match");
+            }
+
             _context.Match.Add(match);
             await _context.SaveChangesAsync();
 
@@ -96,7 +145,12 @@ namespace WebCoursework.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMatch(int id)
         {
+            if (!MatchExists(id))
+            {
+                return MatchNotExistMessage(id);
+            }
             var match = await _context.Match.FindAsync(id);
+
             if (match == null)
             {
                 return NotFound();
@@ -112,5 +166,23 @@ namespace WebCoursework.Controllers
         {
             return _context.Match.Any(e => e.MatchId == id);
         }
+
+        private bool AreTeamIdsValid(int? homeTeamId, int? awayTeamId)
+        {
+            return homeTeamId != null && awayTeamId != null;
+        }
+
+        private bool AreScoresValid(int? homeTeamScore, int? awayTeamScore)
+        {
+            return homeTeamScore != null && awayTeamScore != null;
+        }
+
+        private IActionResult MatchNotExistMessage(int id)
+        {
+            _logger.LogInformation($"Failed to find a Match with Id ({id})");
+            return BadRequest($"A Match with ID {id} does not exist");
+        }
+
+
     }
 }

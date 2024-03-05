@@ -54,7 +54,7 @@ namespace WebCoursework.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTeam(int id, Team team)
         {
-            //Player doesn't exist
+            //Team doesn't exist
             if (!TeamExists(id))
             {
                 return TeamNotExistMessage(id);

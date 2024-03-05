@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebCoursework.Models;
 
+
 namespace WebCoursework.Controllers
 {
     [Authorize(Roles = "Admin,User")]
@@ -50,10 +51,26 @@ namespace WebCoursework.Controllers
         }
 
         // PUT: api/VenueContext/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutVenue(int id, Venue venue)
         {
+            if (!VenueExists(id))
+            {
+                return VenueNotExistMessage(id);
+            }
+
+            if (id != venue.VenueId)
+            {
+                _logger.LogInformation($"URL ID {id} doesn't match request for Venue ID {venue.VenueId}");
+                return BadRequest($"The Venue ID in the URL ({id}) does not match the Venue ID ({venue.VenueId}) in the request body");
+            }
+
+            if (venue.Capacity > 100000 || venue.Capacity < 10000)
+            {
+                _logger.LogInformation("An attempt to change a venue's capacity beyond league rules was made.");
+                return BadRequest("League rules state you cannot increase a venue's capacity to over 100,000 or below 10,000.");
+            }
+
             if (id != venue.VenueId)
             {
                 return BadRequest();
@@ -85,6 +102,13 @@ namespace WebCoursework.Controllers
         [HttpPost]
         public async Task<ActionResult<Venue>> PostVenue(Venue venue)
         {
+            if (venue.Capacity > 100000 || venue.Capacity < 10000)
+            {
+                _logger.LogInformation("An attempt to create a venue with capacity beyond league rules was made.");
+                return BadRequest("League rules state you cannot have a venue's capacity over 100,000 or below 10,000.");
+            }
+
+
             _context.Venue.Add(venue);
             await _context.SaveChangesAsync();
 
@@ -96,10 +120,21 @@ namespace WebCoursework.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteVenue(int id)
         {
+            if (!VenueExists(id))
+            {
+                return VenueNotExistMessage(id);
+            }
+
             var venue = await _context.Venue.FindAsync(id);
             if (venue == null)
             {
                 return NotFound();
+            }
+
+            if (_context.Match.Any(m => m.VenueId == id))
+            {
+                _logger.LogInformation($"Failed to delete a venue, ID: ({id}) as holds a record of a match played here");
+                return BadRequest($"Venue ID: {id} has hosted matches so can't be deleted.");
             }
 
             _context.Venue.Remove(venue);
@@ -111,6 +146,12 @@ namespace WebCoursework.Controllers
         private bool VenueExists(int id)
         {
             return _context.Venue.Any(e => e.VenueId == id);
+        }
+
+        private IActionResult VenueNotExistMessage(int id)
+        {
+            _logger.LogInformation($"Failed to find a Venue with Id ({id}) passed by the user");
+            return BadRequest($"A Venue with ID {id} does not exist");
         }
     }
 }

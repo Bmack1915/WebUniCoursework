@@ -14,7 +14,7 @@ namespace WebCoursework.Controllers
     [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
-    public class DataController : Controller
+    public class DataController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
         private readonly ILogger<DataController> _logger;
@@ -89,7 +89,7 @@ namespace WebCoursework.Controllers
 
             _context.Team.Add(new Team
             {
-                Name = "Read Madrid",
+                Name = "Real Madrid",
                 LeagueId = 1,
                 TeamId = 2
             });
@@ -110,24 +110,38 @@ namespace WebCoursework.Controllers
                 });
             }
 
-            //Match match = new Match()
-            //{
-            //    HomeTeamId = 1,
-            //    AwayTeamId = 2,
-            //    VenueId = 1,
-            //    HomeTeamScore = 5,
-            //    AwayTeamScore = 0,
-            //    Date = 
-            //};
+            _context.Match.Add(new Match()
+            {
+                HomeTeamId = 1,
+                AwayTeamId = 2,
+                VenueId = 1,
+                HomeTeamScore = 5,
+                AwayTeamScore = 0,
+                Date = DateTime.Today
+            });
+
+
+            _context.Match.Add(new Match()
+            {
+                HomeTeamId = 2,
+                AwayTeamId = 1,
+                VenueId = 2,
+                HomeTeamScore = 0,
+                AwayTeamScore = 4,
+                Date = DateTime.Now.AddDays(-7)
+            });
+
+            _context.Match.Add(new Match()
+            {
+                HomeTeamId = 2,
+                AwayTeamId = 1,
+                VenueId = 2,
+                HomeTeamScore = 1,
+                AwayTeamScore = 3,
+                Date = DateTime.Now.AddDays(-14)
+            });
 
             await _context.SaveChangesAsync();
-        }
-
-
-        // GET: /<controller>/
-        public IActionResult Index()
-        {
-            return View();
         }
     }
 }

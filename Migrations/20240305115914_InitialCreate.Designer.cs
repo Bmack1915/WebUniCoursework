@@ -11,7 +11,7 @@ using WebCoursework.Models;
 namespace WebCoursework.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240304134700_InitialCreate")]
+    [Migration("20240305115914_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -236,10 +236,16 @@ namespace WebCoursework.Migrations
                     b.Property<int>("AwayTeamId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("AwayTeamScore")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTime>("Date")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("HomeTeamId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("HomeTeamScore")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("VenueId")

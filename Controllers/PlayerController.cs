@@ -30,6 +30,7 @@ namespace WebCoursework.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Player>>> GetPlayer()
         {
+            //_logger.LogInformation("")
             return await _context.Player.ToListAsync();
         }
 
@@ -37,8 +38,9 @@ namespace WebCoursework.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Player>> GetPlayer(int id)
         {
+            //Include players team in when it's returned.
             var player = await _context.Player.Include(Player => Player.Team).FirstOrDefaultAsync(Team => Team.PlayerId == id);
-            //var player = await _context.Player.FindAsync(id);
+
             if (player == null)
             {
                 return NotFound($"A Player with Id {id} does not exist");
@@ -50,8 +52,6 @@ namespace WebCoursework.Controllers
             };
 
             var jsonString = JsonSerializer.Serialize(player, options);
-
-
             return Ok(jsonString);
         }
 

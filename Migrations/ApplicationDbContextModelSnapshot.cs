@@ -233,10 +233,16 @@ namespace WebCoursework.Migrations
                     b.Property<int>("AwayTeamId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("AwayTeamScore")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTime>("Date")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("HomeTeamId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("HomeTeamScore")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("VenueId")

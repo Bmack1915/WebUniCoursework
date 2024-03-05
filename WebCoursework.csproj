@@ -34,12 +34,13 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.2" />
   </ItemGroup>
   <ItemGroup>
+    <None Update="SportsLeague.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
     <EmbeddedResource Include="SportsLeague.db">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controllers\VenueController.cs" Condition=" '$(EnableDefaultCompileItems)' == 'true' " />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="Controllers\VenueController.cs" />
   </ItemGroup>
 </Project>

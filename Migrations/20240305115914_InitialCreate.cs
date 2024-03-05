@@ -212,7 +212,9 @@ namespace WebCoursework.Migrations
                     Date = table.Column<DateTime>(type: "TEXT", nullable: false),
                     VenueId = table.Column<int>(type: "INTEGER", nullable: false),
                     HomeTeamId = table.Column<int>(type: "INTEGER", nullable: false),
-                    AwayTeamId = table.Column<int>(type: "INTEGER", nullable: false)
+                    AwayTeamId = table.Column<int>(type: "INTEGER", nullable: false),
+                    HomeTeamScore = table.Column<int>(type: "INTEGER", nullable: false),
+                    AwayTeamScore = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
