@@ -41,22 +41,10 @@ namespace WebCoursework.Controllers
         {
             var team = await _context.Team.FindAsync(id);
 
-            //Doesn't currently work
-            //var team = await _context.Team.Include(Team => Team.Players).FirstOrDefaultAsync(Player => Player.TeamId == id);
-            //var teamWithPlayers = _context.Team.Include(t => t.Players).ToList();
-
             if (team == null)
             {
                 return NotFound();
             }
-
-            //var options = new JsonSerializerOptions
-            //{
-            //    ReferenceHandler = ReferenceHandler.Preserve
-            //};
-
-            //var jsonString = JsonSerializer.Serialize(teamWithPlayers, options);
-
 
             return team;
         }

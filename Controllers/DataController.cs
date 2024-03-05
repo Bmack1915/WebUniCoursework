@@ -36,6 +36,12 @@ namespace WebCoursework.Controllers
                 Name = "Division 1"
             };
 
+            League league2 = new League()
+            {
+                LeagueId = 2,
+                Name = "Division 2"
+            };
+
             _context.League.Add(league);
 
             Venue venue1 = new Venue()
@@ -103,6 +109,17 @@ namespace WebCoursework.Controllers
                     TeamId = 2
                 });
             }
+
+            //Match match = new Match()
+            //{
+            //    HomeTeamId = 1,
+            //    AwayTeamId = 2,
+            //    VenueId = 1,
+            //    HomeTeamScore = 5,
+            //    AwayTeamScore = 0,
+            //    Date = 
+            //};
+
             await _context.SaveChangesAsync();
         }
 
