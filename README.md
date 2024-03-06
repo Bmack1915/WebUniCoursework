@@ -13,6 +13,7 @@ The following entities exist to model a simple sports league:
 - League
 
 Each entity has a Controller to allow for basic CRUD operations, each with simple validation and console logging.
+In addition to controllers for each entity, Role, Account and Data Controllers have been added to manage roles, account management and the autogeneration of some data points (should someone using the service wish to deploy their own blank database) respectively.
 
 Steps to run the Web API
 -------------------------
