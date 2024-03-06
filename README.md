@@ -25,6 +25,8 @@ Deploying to Azure
 -------------------
 This Web API uses a local db (in this case a 'SportsLeague.db') which can be seen in the repo and within the solution tree in VS. When deploying to Azure through VS, it is crucial that the Build Proprties (right click on the SportsLeague.db, Properties -> Build) are set to 'EmbeddedResource' and "Always Copy", so that the db file is seen by Azure during the build.
 
+webcourseworkuni.azurewebsites.net is the domain for this service, which can then be consumed in postman, provided it is running.
+
 Endpoints
 ---------
 The following endpoints exist for all controllers: 
@@ -37,8 +39,8 @@ The following endpoints exist for all controllers:
 
 (Example)
 -GET-
-https://localhost:7220/api/player : GET a list of all players
-https://localhost:7220/api/player/1 : GET player with PlayerId 1.
+https://localhost:7220/api/player : GET a list of all players (CONSUME IN POSTMAN)
+https://localhost:7220/api/player/1 : GET player with PlayerId 1 (CONSUME IN POSTMAN)
 
 Authentication + Authorization
 ------------------------------
