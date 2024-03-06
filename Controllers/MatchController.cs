@@ -74,7 +74,7 @@ namespace WebCoursework.Controllers
 
             if (!AreScoresValid(match.HomeTeamScore, match.AwayTeamScore))
             {
-                _logger.LogInformation("Admin attempted to edit a match without assigning them to a League");
+                _logger.LogInformation("Admin attempted to edit a match without passing two valid scorelines");
                 return BadRequest("A match score must involve a score from each team, please pass a valid scoreline for each team.");
             }
 
@@ -111,7 +111,6 @@ namespace WebCoursework.Controllers
         }
 
         // POST: api/Match
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<Match>> PostMatch(Match match)
@@ -125,7 +124,7 @@ namespace WebCoursework.Controllers
 
             if (!AreScoresValid(match.HomeTeamScore, match.AwayTeamScore))
             {
-                _logger.LogInformation("Admin attempted to edit a match without assigning them to a League");
+                _logger.LogInformation("Admin attempted to edit a match without passing two valid scorelines");
                 return BadRequest("A match score must involve a score from each team, please pass a valid scoreline for each team.");
             }
 

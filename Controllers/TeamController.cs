@@ -69,7 +69,7 @@ namespace WebCoursework.Controllers
 
             if (team.LeagueId == 0)
             {
-                _logger.LogInformation("User attempted to edit a team without assigning them to a League");
+                _logger.LogInformation("Admin attempted to edit a team without assigning them to a League");
                 return BadRequest("You must assign a League to a team. Please pass a team ID.");
             }
 
@@ -102,7 +102,7 @@ namespace WebCoursework.Controllers
         {
             if (team.LeagueId == 0)
             {
-                _logger.LogInformation("User attempted to create a Team without assigning them to a League");
+                _logger.LogInformation("Admin attempted to create a Team without assigning them to a League");
                 return BadRequest("A team must be assigned to a League. Please pass a League ID.");
             }
 

@@ -40,16 +40,17 @@ namespace WebCoursework.Controllers
         {
             //Include list of teams
             var league = await _context.League.Include(League => League.Teams).FirstOrDefaultAsync(Team => Team.LeagueId == id);
+
             if (league == null)
             {
                 return NotFound();
             }
+
             _logger.LogInformation($"League (ID: {id}) successfully retrieved");
             return league;
         }
 
         // PUT: api/League/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> PutLeague(int id, League league)
@@ -58,10 +59,11 @@ namespace WebCoursework.Controllers
             {
                 return LeagueDoesntExistMessage(id);
             }
+
             if (id != league.LeagueId)
             {
                 _logger.LogInformation($"URL ID {id} doesn't match request League ID {league.LeagueId}");
-                return BadRequest($"The player ID in the URL ({id}) does not match the player ID ({league.LeagueId}) in the request body");
+                return BadRequest($"The League ID in the URL ({id}) does not match the League ID ({league.LeagueId}) in the request body");
             }
 
             _context.Entry(league).State = EntityState.Modified;
@@ -111,9 +113,16 @@ namespace WebCoursework.Controllers
         public async Task<IActionResult> DeleteLeague(int id)
         {
             var league = await _context.League.FindAsync(id);
+
             if (league == null)
             {
                 return NotFound();
+            }
+
+            if (_context.Team.Any(t => t.LeagueId == id))
+            {
+                _logger.LogInformation($"Failed to delete a League, ID: ({id}) as it still contains teams");
+                return BadRequest($"League ID: {id} has teams on it so can't be deleted.");
             }
 
             _context.League.Remove(league);

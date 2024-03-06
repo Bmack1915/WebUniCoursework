@@ -10,6 +10,7 @@ namespace WebCoursework.Models
 		public int Capacity { get; set; }
 
 		//List of matches?
+		[JsonIgnore]
 		List<Match>? Matches { get; set; }
 	}
 }

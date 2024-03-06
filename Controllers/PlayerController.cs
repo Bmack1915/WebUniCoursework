@@ -38,22 +38,14 @@ namespace WebCoursework.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Player>> GetPlayer(int id)
         {
-            //Include players team in when it's returned.
-            var player = await _context.Player.Include(Player => Player.Team).FirstOrDefaultAsync(Team => Team.PlayerId == id);
-
+            var player = await _context.Player.FindAsync(id);
             if (player == null)
             {
                 return NotFound($"A Player with Id {id} does not exist");
             }
-
-            var options = new JsonSerializerOptions
-            {
-                ReferenceHandler = ReferenceHandler.Preserve
-            };
-
-            var jsonString = JsonSerializer.Serialize(player, options);
+           
             _logger.LogInformation($"Player with ID: {id} successfully retrieved");
-            return Ok(jsonString);
+            return player;
         }
 
         // PUT: api/Player/5
@@ -75,7 +67,7 @@ namespace WebCoursework.Controllers
 
             if (player.TeamId == 0)
             {
-                _logger.LogInformation("User attempted to edit a player without assigning them to a team");
+                _logger.LogInformation("Admin attempted to edit a player without assigning them to a team");
                 return BadRequest("You must assign a player to a team. Please pass a team ID.");
             }
 
@@ -107,7 +99,7 @@ namespace WebCoursework.Controllers
         {
             if (player.TeamId == 0)
             {
-                _logger.LogInformation("User attempted to create a player without assigning them to a team");
+                _logger.LogInformation("Admin attempted to create a player without assigning them to a team");
                 return BadRequest("A new player must be assigned to a team. Please pass a team ID.");
             }
 

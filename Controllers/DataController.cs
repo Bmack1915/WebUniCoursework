@@ -26,6 +26,7 @@ namespace WebCoursework.Controllers
         }
 
         // POST: api/Data
+        //Auto generate some data for the DB if required
         [HttpPost]
         public async Task Post()
         {
